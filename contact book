@@ -1,0 +1,138 @@
+def contact_book():
+    contacts = {}
+    
+    while True:
+        print("\n--- CONTACT MANAGEMENT SYSTEM ---")
+        print("1. Add New Contact")
+        print("2. View Contact List")
+        print("3. Search Contact")
+        print("4. Update Contact")
+        print("5. Delete Contact")
+        print("6. Exit")
+        
+        choice = input("Select an option (1-6): ").strip()
+        
+        if choice == "1":
+            name = input("Enter contact name: ").strip()
+            
+            if not name:
+                print("Error: Name cannot be blank.")
+                continue
+                
+            if name.lower() in [k.lower() for k in contacts.keys()]:
+                print("Error: A contact with this name already exists.")
+                continue
+                
+            phone = input("Enter phone number: ").strip()
+            email = input("Enter email address: ").strip()
+            address = input("Enter physical address: ").strip()
+            
+            contacts[name] = {
+                "phone": phone,
+                "email": email,
+                "address": address
+            }
+            
+            print(f"Success: '{name}' added to contacts.")
+            
+        elif choice == "2":
+            if not contacts:
+                print("\nYour contact book is empty.")
+            else:
+                print("\n--- SAVED CONTACTS ---")
+                
+                for index, (name, details) in enumerate(contacts.items(), 1):
+                    print(f"{index}. Name: {name} | Phone: {details['phone']}")
+                    
+        elif choice == "3":
+            if not contacts:
+                print("\nNo contacts available to search.")
+                continue
+                
+            query = input("Search by Name or Phone Number: ").strip().lower()
+            
+            if not query:
+                print("Error: Search query cannot be empty.")
+                continue
+                
+            found = False
+            print("\n--- SEARCH RESULTS ---")
+            
+            for name, details in contacts.items():
+                if query in name.lower() or query in details['phone']:
+                    print(f"Name: {name}")
+                    print(f"  Phone:   {details['phone']}")
+                    print(f"  Email:   {details['email']}")
+                    print(f"  Address: {details['address']}")
+                    print("-" * 20)
+                    found = True
+                    
+            if not found:
+                print("No matching contacts found.")
+                
+        elif choice == "4":
+            if not contacts:
+                print("\nNo contacts available to update.")
+                continue
+                
+            name_to_update = input("Enter the exact name of the contact to update: ").strip()
+            
+            matched_key = None
+            
+            for key in contacts.keys():
+                if key.lower() == name_to_update.lower():
+                    matched_key = key
+                    break
+                    
+            if matched_key:
+                print(f"\nUpdating details for '{matched_key}'. Leave blank to keep current value.")
+                
+                current = contacts[matched_key]
+                
+                new_phone = input(f"New Phone [{current['phone']}]: ").strip()
+                new_email = input(f"New Email [{current['email']}]: ").strip()
+                new_address = input(f"New Address [{current['address']}]: ").strip()
+                
+                if new_phone:
+                    current["phone"] = new_phone
+                    
+                if new_email:
+                    current["email"] = new_email
+                    
+                if new_address:
+                    current["address"] = new_address
+                    
+                print(f"Success: '{matched_key}' has been updated.")
+            else:
+                print("Error: Contact not found.")
+                
+        elif choice == "5":
+            if not contacts:
+                print("\nNo contacts available to delete.")
+                continue
+                
+            name_to_delete = input("Enter the exact name of the contact to delete: ").strip()
+            
+            matched_key = None
+            
+            for key in contacts.keys():
+                if key.lower() == name_to_delete.lower():
+                    matched_key = key
+                    break
+                    
+            if matched_key:
+                contacts.pop(matched_key)
+                print(f"Success: '{matched_key}' has been removed.")
+            else:
+                print("Error: Contact not found.")
+                
+        elif choice == "6":
+            print("Closing Contact Management System. Goodbye!")
+            break
+            
+        else:
+            print("Invalid choice. Please select a number between 1 and 6.")
+
+
+if _name_ == "_main_":
+    contact_book()
