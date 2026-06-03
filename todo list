@@ -1,0 +1,78 @@
+def todo_app():
+    tasks = []
+
+    while True:
+        print("\n--- TO-DO LIST ---")
+        print("1. View Tasks")
+        print("2. Add Task")
+        print("3. Mark Task as Completed")
+        print("4. Delete Task")
+        print("5. Exit")
+
+        choice = input("Choose an option (1-5): ").strip()
+
+        if choice == "1":
+            if not tasks:
+                print("\nYour to-do list is empty!")
+            else:
+                print("\nYour Tasks:")
+                for index, task in enumerate(tasks, 1):
+                    status = "✅" if task["completed"] else "❌"
+                    print(f"{index}. [{status}] {task['title']}")
+
+        elif choice == "2":
+            title = input("Enter the task description: ").strip()
+
+            if title:
+                tasks.append({
+                    "title": title,
+                    "completed": False
+                })
+                print(f"Task '{title}' added successfully!")
+            else:
+                print("Task description cannot be empty.")
+
+        elif choice == "3":
+            if not tasks:
+                print("\nNo tasks to complete.")
+                continue
+
+            try:
+                task_num = int(input("Enter task number to complete: "))
+
+                if 1 <= task_num <= len(tasks):
+                    tasks[task_num - 1]["completed"] = True
+                    print(f"Task {task_num} marked as completed!")
+                else:
+                    print("Invalid task number.")
+
+            except ValueError:
+                print("Please enter a valid number.")
+
+        elif choice == "4":
+            if not tasks:
+                print("\nNo tasks to delete.")
+                continue
+
+            try:
+                task_num = int(input("Enter task number to delete: "))
+
+                if 1 <= task_num <= len(tasks):
+                    removed = tasks.pop(task_num - 1)
+                    print(f"Deleted task: '{removed['title']}'")
+                else:
+                    print("Invalid task number.")
+
+            except ValueError:
+                print("Please enter a valid number.")
+
+        elif choice == "5":
+            print("Goodbye!")
+            break
+
+        else:
+            print("Invalid choice. Please select from 1 to 5.")
+
+
+if _name_ == "_main_":
+    todo_app()
